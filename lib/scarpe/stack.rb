@@ -6,6 +6,10 @@ class Scarpe
       instance_eval(&block)
     end
 
+    def background(color)
+      @background = color
+    end
+
     def element
       HTML.render do |h|
         h.div(id: html_id, style: style) { yield }
@@ -21,6 +25,7 @@ class Scarpe
       styles["flex-direction"] = "column"
       styles[:margin] = Dimensions.length(@margin) if @margin
       styles[:width] = Dimensions.length(@width) if @width
+      styles[:background] = @background if @background
 
       styles
     end
