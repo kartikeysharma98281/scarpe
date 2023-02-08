@@ -10,6 +10,14 @@ class Scarpe
       @callbacks = {}
       @opts = opts
       @debug = opts[:debug] ? true : false
+      $widgets = Scarpe::Widget.subclasses.each_with_object($widgets || {}) do |klass,widgets|
+        # this has to be cleaned up... badly
+        *name = klass.name.split("::").last.split('Widget', -1)
+        method_name = name.join.gsub(/(.)([A-Z])/,'\1_\2').downcase
+        widgets[method_name] = klass
+
+        # { "image" => ImageWidget, "link" => LinkWidget }
+      end
     end
 
     def bind(name, &block)
@@ -22,6 +30,10 @@ class Scarpe
 
     def render(&block)
       instance_eval(&block)
+      result = (@children || []).map do |child|
+        child.to_html
+      end.join
+      puts "!" + result
     end
 
     def do_js_eval(js)
@@ -60,6 +72,25 @@ class Scarpe
     end
     def js_eval(js_code)
       Scarpe::JSEval.new(self, js_code)
+    end
+
+    def green
+      "green"
+    end
+
+    def method_missing(name, *args, &block)
+      widget = $widgets[name.to_s]
+
+      raise NoMethodError, "no method #{name} for #{self.class.name}" unless widget
+
+      widget_instance = widget.new(*args)
+
+      @children ||= []
+      @children << widget_instance
+
+      puts "@children #{@children}"
+
+      widget_instance
     end
   end
 end

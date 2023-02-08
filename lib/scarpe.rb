@@ -4,7 +4,7 @@ require "webview_ruby"
 require "securerandom"
 require "json"
 
-require_relative "scarpe/app"
+require_relative "scarpe/widget"
 require_relative "scarpe/dimensions"
 require_relative "scarpe/html"
 require_relative "scarpe/container"
@@ -18,6 +18,7 @@ require_relative "scarpe/edit_line"
 require_relative "scarpe/alert"
 require_relative "scarpe/js_eval"
 require_relative "scarpe/internal_app"
+require_relative "scarpe/app"
 
 class Scarpe
   class << self

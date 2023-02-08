@@ -28,8 +28,6 @@ class Scarpe
     def method_missing(name, *args, &block)
       raise NoMethodError, "no method #{name} for #{self.class.name}" unless TAGS.include?(name)
 
-
-
       if VOID_TAGS.include?(name)
         raise ArgumentError, "void tag #{name} cannot have content" if block_given?
         @buffer += "<#{name}#{render_attributes(*args)} />"
