@@ -3,6 +3,8 @@
 class Scarpe
   class DocumentRoot < Scarpe::Widget
     include Scarpe::Background
+    include Scarpe::Stroke
+    include Scarpe::Border
 
     display_property :debug
 
